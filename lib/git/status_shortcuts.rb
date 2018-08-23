@@ -22,7 +22,7 @@
 
 @project_root = File.exist?(".git") ? Dir.pwd : `\git rev-parse --show-toplevel 2> /dev/null`.strip
 
-@git_status = `\git status --porcelain 2> /dev/null`
+@git_status = `\git status #{ARGV[1]} --porcelain 2> /dev/null`
 
 git_branch = `\git branch -v 2> /dev/null`
 @branch = git_branch[/^\* (\(no branch\)|[^ ]*)/, 1]
@@ -199,7 +199,7 @@ end
   group, heading = *data
 
   # Allow filtering by specific group (by string or integer)
-  if !ARGV[0] || ARGV[0] == group.to_s || ARGV[0] == (i+1).to_s; then
+  if !ARGV[0] || ARGV[0] == '_' || ARGV[0] == group.to_s || ARGV[0] == (i+1).to_s; then
     if !@stat_hash[group].empty?
       c_arrow="\033[1;#{@group_c[group]}"
       c_hash="\033[0;#{@group_c[group]}"
